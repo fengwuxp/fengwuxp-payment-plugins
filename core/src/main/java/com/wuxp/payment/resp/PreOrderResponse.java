@@ -1,11 +1,12 @@
 package com.wuxp.payment.resp;
 
-import com.sun.istack.internal.NotNull;
 import com.wuxp.payment.req.PaymentBaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotNull;
 
 
 /**

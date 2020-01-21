@@ -1,11 +1,8 @@
 package com.wuxp.payment.req;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * 查询订单请求对象

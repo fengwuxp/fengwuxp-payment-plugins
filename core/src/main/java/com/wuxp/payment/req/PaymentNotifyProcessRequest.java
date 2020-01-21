@@ -1,8 +1,6 @@
 package com.wuxp.payment.req;
 
-import com.wuxp.payment.PaymentNotifyProcessor;
 import com.wuxp.payment.enums.NotifyMethod;
-import com.wuxp.payment.enums.PaymentMethod;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

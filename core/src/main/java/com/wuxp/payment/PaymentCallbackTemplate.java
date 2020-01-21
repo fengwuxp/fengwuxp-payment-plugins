@@ -3,7 +3,6 @@ package com.wuxp.payment;
 
 import com.wuxp.payment.enums.NotifyMethod;
 import com.wuxp.payment.model.PaymentBaseOrder;
-import com.wuxp.payment.resp.OrderRefundResponse;
 import com.wuxp.payment.resp.QueryOrderResponse;
 import com.wuxp.payment.resp.QueryRefundOrderResponse;
 

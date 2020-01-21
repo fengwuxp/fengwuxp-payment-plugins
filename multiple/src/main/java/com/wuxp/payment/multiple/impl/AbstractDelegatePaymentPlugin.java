@@ -1,7 +1,6 @@
 package com.wuxp.payment.multiple.impl;
 
 import com.wuxp.payment.PaymentPlugin;
-import com.wuxp.payment.multiple.PaymentPluginProvider;
 import com.wuxp.payment.enums.PaymentMethod;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ public class AbstractDelegatePaymentPlugin implements PaymentPlugin, BeanFactory
 
     protected BeanFactory beanFactory;
 
-    protected PaymentPluginProvider paymentPluginProvider;
+    protected PlatformPaymentServiceProvider paymentPluginProvider;
 
     protected PaymentMethod paymentMethod;
 
@@ -28,7 +27,7 @@ public class AbstractDelegatePaymentPlugin implements PaymentPlugin, BeanFactory
     public void afterPropertiesSet() throws Exception {
 
         if (this.paymentPluginProvider == null) {
-            this.paymentPluginProvider = this.beanFactory.getBean(PaymentPluginProvider.class);
+            this.paymentPluginProvider = this.beanFactory.getBean(PlatformPaymentServiceProvider.class);
         }
     }
 

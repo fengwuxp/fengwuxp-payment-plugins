@@ -39,7 +39,7 @@ public enum PaymentMethod {
     /**
      * 付款码（或刷脸）
      */
-    BAR_CODE("付款码支付");
+    AUTH_CODE("付款码支付");
 
     private String desc;
 

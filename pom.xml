@@ -25,6 +25,7 @@
         <module>core</module>
         <module>alipay</module>
         <module>multiple</module>
+        <module>fengwuxp-payment-spring-boot-starter</module>
     </modules>
 
 

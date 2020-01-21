@@ -1,6 +1,5 @@
 package com.wuxp.payment.resp;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 /**
