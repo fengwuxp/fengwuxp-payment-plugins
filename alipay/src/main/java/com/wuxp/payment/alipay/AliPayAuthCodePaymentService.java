@@ -9,9 +9,11 @@ import com.wuxp.payment.AliPayPaymentConfig;
 import com.wuxp.payment.AuthCodePaymentHandleStrategy;
 import com.wuxp.payment.AuthCodePaymentPlugin;
 import com.wuxp.payment.enums.ExpireDateType;
+import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.req.AuthCodePaymentRequest;
 import com.wuxp.payment.resp.PreOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,8 +28,12 @@ public class AliPayAuthCodePaymentService extends AbstractAliPayPaymentService i
 
     private AuthCodePaymentHandleStrategy paymentHandleStrategy;
 
-    public AliPayAuthCodePaymentService(AliPayPaymentConfig payPaymentConfig) {
-        super(payPaymentConfig);
+    public AliPayAuthCodePaymentService() {
+        this(null);
+    }
+
+    public AliPayAuthCodePaymentService(AliPayPaymentConfig paymentConfig) {
+        super(PaymentMethod.AUTH_CODE, paymentConfig);
     }
 
 

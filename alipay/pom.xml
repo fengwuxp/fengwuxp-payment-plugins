@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.wuxp.payment</groupId>
             <artifactId>fengwuxp-payment-plugins-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${payment-plugin-version}</version>
             <scope>compile</scope>
         </dependency>
 

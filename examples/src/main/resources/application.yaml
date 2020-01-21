@@ -1,0 +1,44 @@
+wuxp:
+  #  captcha:
+  #    enabled: true
+  #    key: captchaKey
+  #    value: captchaValue
+  picture:
+    -simple:
+      length: 6
+      width: 200
+      height: 80
+    -test:
+      length: 4
+      width: 140
+      height: 60
+  #  security:
+  #    enabled: true
+#  restful:
+#    packages:
+#      - com.wuxp.security.example.endpoint
+#      - com.wuxp.security.example.controller
+
+spring:
+  profiles:
+    active: dev
+#  resources:
+#    cache:
+#      period: 31536000
+#      cachecontrol:
+#        max-age: 31536000
+#    chain:
+#      html-application-cache: true
+#      enabled: true
+#      strategy:
+#        content:
+#          enabled: true
+#          paths: /webjars/swagger-ui/**.*
+#springdoc:
+#  api-docs:
+#    groups:
+#      enabled: true
+#  swagger-ui:
+#    path: /swagger-ui.html
+#    display-request-duration: true
+#  version: '@springdoc.version@'

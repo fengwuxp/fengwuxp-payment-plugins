@@ -18,18 +18,20 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
-
+        <payment-plugin-version>1.0.0-SNAPSHOT</payment-plugin-version>
     </properties>
 
     <modules>
         <module>core</module>
         <module>alipay</module>
-        <module>multiple</module>
-        <module>fengwuxp-payment-spring-boot-starter</module>
+        <module>payment-boot-starter</module>
+        <module>wechat</module>
+        <module>examples</module>
     </modules>
 
 
     <dependencies>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -55,11 +57,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>2.0.1.Final</version>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -1,0 +1,26 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /api
+
+spring:
+#  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://localhost:3306/study_db?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=UTC
+#  jpa:
+#    scan-packages: com.wuxp,com.oaknt
+#    generate-ddl: false
+#    show-sql: true
+#    format-sql: true
+#    properties:
+#      hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
+#      hibernate.id.new_generator_mappings: false
+#      hibernate.dialect.storage_engine: innodb
+
+logging:
+  level:
+    org.springframework: debug
+
+

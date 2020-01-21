@@ -15,6 +15,7 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.wuxp.payment.AbstractPlatformPaymentService;
 import com.wuxp.payment.AliPayPaymentConfig;
+import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.enums.TradeStatus;
 import com.wuxp.payment.model.PaymentBaseOrder;
@@ -25,6 +26,7 @@ import com.wuxp.payment.resp.QueryRefundOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -37,7 +39,7 @@ import java.util.Map;
  * 支付宝支付的抽象实现
  */
 @Slf4j
-public abstract class AbstractAliPayPaymentService extends AbstractPlatformPaymentService {
+public abstract class AbstractAliPayPaymentService extends AbstractPlatformPaymentService<AliPayPaymentConfig> {
     /**
      * 支付结果处理成功返回码
      */
@@ -52,16 +54,15 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
     protected final static String ALI_PAY_DEV = "alipaydev";
 
 
-    protected AliPayPaymentConfig payPaymentConfig;
-
     protected AlipayClient alipayClient;
 
 
-    public AbstractAliPayPaymentService(AliPayPaymentConfig payPaymentConfig) {
-        this.payPaymentConfig = payPaymentConfig;
+    public AbstractAliPayPaymentService(PaymentMethod paymentMethod, AliPayPaymentConfig paymentConfig) {
+        super(paymentMethod, paymentConfig);
         this.paymentPlatform = PaymentPlatform.ALI_PAY;
         this.alipayClient = this.getAliPayClient();
     }
+
 
     /**
      * 支付宝交易状态
@@ -322,12 +323,12 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      */
     protected AlipayClient getAliPayClient() {
         return new DefaultAlipayClient(
-                payPaymentConfig.getServiceUrl(),
-                payPaymentConfig.getAppId(),
-                payPaymentConfig.getAppPrivateKey(),
+                paymentConfig.getServiceUrl(),
+                paymentConfig.getAppId(),
+                paymentConfig.getAppPrivateKey(),
                 "json",
-                payPaymentConfig.getCharset(),
-                payPaymentConfig.getAliPayPublicKey(),
+                paymentConfig.getCharset(),
+                paymentConfig.getAliPayPublicKey(),
                 EncryptType.RSA2.name());
     }
 
@@ -368,7 +369,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * @return
      */
     protected boolean isUseSandboxEnv() {
-        return this.payPaymentConfig.getServiceUrl().contains(ALI_PAY_DEV);
+        return this.paymentConfig.getServiceUrl().contains(ALI_PAY_DEV);
     }
 
     /**
@@ -377,7 +378,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * @return
      */
     private boolean verifyPaymentNotifyRequest(PaymentNotifyProcessRequest request) {
-        AliPayPaymentConfig paymentConfig = this.payPaymentConfig;
+        AliPayPaymentConfig paymentConfig = this.paymentConfig;
 
         //参数验证
         String tradeNo = request.getTradeNo();
@@ -402,13 +403,13 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * @return
      */
     private boolean verifyRefundNotifyRequest(RefundNotifyProcessRequest request) {
-        AliPayPaymentConfig paymentConfig = this.payPaymentConfig;
+        AliPayPaymentConfig paymentConfig = this.paymentConfig;
         //参数验证
         Map<String, Object> params = request.getNotifyParams();
         String refundSn = request.getRefundTradeNo();
         BigDecimal refundAmount = PaymentUtil.fen2Yun(request.getRefundAmount());
 
-        boolean paramVerify = refundSn != null && payPaymentConfig.getPartner().equals(params.get("seller_id"))
+        boolean paramVerify = refundSn != null && paymentConfig.getPartner().equals(params.get("seller_id"))
                 && refundSn.equals(params.get("out_trade_no"))
                 && refundAmount.toString().equals(params.get("refund_fee"));
         if (!paramVerify) {
@@ -441,7 +442,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
 
         boolean RSA2 = EncryptType.RSA2.name().equals(params.get("sign_type"));
 
-        AliPayPaymentConfig paymentConfig = this.payPaymentConfig;
+        AliPayPaymentConfig paymentConfig = this.paymentConfig;
         try {
             // 切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
             return AlipaySignature.rsaCheckV1(stringStringHashMap, paymentConfig.getAliPayPublicKey(), paymentConfig.getCharset(),

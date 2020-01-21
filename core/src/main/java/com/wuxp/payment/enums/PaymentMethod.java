@@ -16,6 +16,11 @@ public enum PaymentMethod {
     APP("App支付"),
 
     /**
+     * pc
+     */
+    PC_BROWSER("pc网页支付"),
+
+    /**
      * h5
      */
     H5("h5支付"),

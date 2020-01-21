@@ -1,13 +1,19 @@
 package com.wuxp.payment;
 
+
+import com.wuxp.payment.enums.PaymentPlatform;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 
 /**
  * 支付宝的配置实现
  */
 @Data
-public class AliPayPaymentConfig implements PaymentConfig {
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+public class AliPayPaymentConfig extends AbstractPaymentConfiguration {
 
 
     /**
@@ -15,25 +21,6 @@ public class AliPayPaymentConfig implements PaymentConfig {
      */
     private String serviceUrl = "https://openapi.alipay.com/gateway.do";
 
-    /**
-     * 合作者(商户号)
-     */
-    private String partner;
-
-    /**
-     * 商户加密key
-     */
-    private String partnerSecret;
-
-    /**
-     * appId
-     */
-    private String appId;
-
-    /**
-     * AppSecret
-     */
-    private String AppSecret;
 
     /**
      * 私钥
@@ -50,5 +37,7 @@ public class AliPayPaymentConfig implements PaymentConfig {
      */
     private String charset = "UTF-8";
 
-
+    public AliPayPaymentConfig() {
+        this.paymentPlatform = PaymentPlatform.ALI_PAY;
+    }
 }

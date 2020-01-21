@@ -8,4 +8,13 @@ import com.wuxp.payment.model.PlatformPaymentIdentity;
 public interface PlatformPaymentService extends PlatformPaymentIdentity, PaymentPlugin, PaymentNotifyProcessor {
 
 
+    /**
+     * 是否启用
+     *
+     * @return
+     */
+   default boolean isEnabled(){
+       return false;
+    };
+
 }

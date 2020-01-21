@@ -8,9 +8,11 @@ import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.wuxp.payment.AliPayPaymentConfig;
 import com.wuxp.payment.alipay.model.AliPayQrCodeTradePayResult;
 import com.wuxp.payment.enums.ExpireDateType;
+import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.req.PreOrderRequest;
 import com.wuxp.payment.resp.PreOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,8 +23,12 @@ import org.apache.commons.lang3.StringUtils;
 public class AliPayQrCodePaymentService extends AbstractAliPayPaymentService {
 
 
-    public AliPayQrCodePaymentService(AliPayPaymentConfig payPaymentConfig) {
-        super(payPaymentConfig);
+    public AliPayQrCodePaymentService() {
+        this(null);
+    }
+
+    public AliPayQrCodePaymentService(AliPayPaymentConfig paymentConfig) {
+        super(PaymentMethod.SCAN_QR_CODE, paymentConfig);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.wuxp.payment.alipay.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -10,6 +11,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class AliPayQrCodeTradePayResult extends AliPayTradePayResult {
 
     /**

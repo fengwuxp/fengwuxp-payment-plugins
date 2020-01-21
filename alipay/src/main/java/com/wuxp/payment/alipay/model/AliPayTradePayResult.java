@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class AliPayTradePayResult {
+public abstract class AliPayTradePayResult {
 
 
     /**

@@ -7,9 +7,11 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.wuxp.payment.AliPayPaymentConfig;
 import com.wuxp.payment.enums.ExpireDateType;
+import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.req.PreOrderRequest;
 import com.wuxp.payment.resp.PreOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,10 +22,14 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class AliPayAppPaymentService extends AbstractAliPayPaymentService {
 
-
-    public AliPayAppPaymentService(AliPayPaymentConfig payPaymentConfig) {
-        super(payPaymentConfig);
+    public AliPayAppPaymentService() {
+        this(null);
     }
+
+    public AliPayAppPaymentService(AliPayPaymentConfig paymentConfig) {
+        super(PaymentMethod.APP, paymentConfig);
+    }
+
 
     @Override
     public PreOrderResponse<String> preOrder(PreOrderRequest req) {

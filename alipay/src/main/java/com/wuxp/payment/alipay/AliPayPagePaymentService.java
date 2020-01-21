@@ -7,9 +7,11 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.wuxp.payment.AliPayPaymentConfig;
 import com.wuxp.payment.alipay.model.AliPayPageTradePayResult;
+import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.req.PreOrderRequest;
 import com.wuxp.payment.resp.PreOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,8 +22,12 @@ import org.apache.commons.lang3.StringUtils;
 public class AliPayPagePaymentService extends AbstractAliPayPaymentService {
 
 
-    public AliPayPagePaymentService(AliPayPaymentConfig payPaymentConfig) {
-        super(payPaymentConfig);
+    public AliPayPagePaymentService() {
+        this(null);
+    }
+
+    public AliPayPagePaymentService(AliPayPaymentConfig paymentConfig) {
+        super(PaymentMethod.PC_BROWSER, paymentConfig);
     }
 
     @Override

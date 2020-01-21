@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 public abstract class AbstractPaymentRequest  implements PaymentBaseRequest{
 
     private static final long serialVersionUID = -8578569660707494474L;
+
     /**
      * 支付平台
      */

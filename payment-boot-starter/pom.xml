@@ -15,14 +15,38 @@
         <dependency>
             <groupId>com.wuxp.payment</groupId>
             <artifactId>fengwuxp-payment-plugins-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${payment-plugin-version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.wuxp.payment</groupId>
             <artifactId>fengwuxp-payment-alipay-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${payment-plugin-version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.wuxp.payment</groupId>
+            <artifactId>fengwuxp-payment-wechat-plugin</artifactId>
+            <version>${payment-plugin-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

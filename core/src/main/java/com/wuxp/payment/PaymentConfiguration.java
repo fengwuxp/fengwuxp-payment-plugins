@@ -1,9 +1,12 @@
 package com.wuxp.payment;
 
+
+import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
+
 /**
  * 支付配置
  */
-public interface PaymentConfig {
+public interface PaymentConfiguration extends PlatformPaymentPartnerIdentity {
 
     /**
      * 获取App Id
@@ -33,4 +36,11 @@ public interface PaymentConfig {
      * @return
      */
     String getPartnerSecret();
+
+    /**
+     * 支付方式是否启用
+     *
+     * @return
+     */
+    boolean isEnabled();
 }
