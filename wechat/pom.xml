@@ -11,5 +11,24 @@
 
     <artifactId>fengwuxp-payment-wechat-plugin</artifactId>
 
+    <properties>
+        <weixin-java-pay.version>3.5.0</weixin-java-pay.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.wuxp.payment</groupId>
+            <artifactId>fengwuxp-payment-plugins-core</artifactId>
+            <version>${payment-plugin-version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>${weixin-java-pay.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

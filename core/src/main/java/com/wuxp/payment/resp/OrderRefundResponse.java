@@ -42,7 +42,10 @@ public class OrderRefundResponse extends AbstractPaymentResponse {
      */
     private String tradeRefundNo;
 
-
+    /**
+     * 第三方退款流水号
+     */
+    private String outTradeRefundNo;
 
     /**
      * 是否全额退款

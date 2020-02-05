@@ -14,7 +14,9 @@ public enum WxTradeType {
     NATIVE("扫码支付"),
 
 
-    APP("APP支付");
+    APP("APP支付"),
+
+    MWEB("网页支付");
 
     private String desc;
 

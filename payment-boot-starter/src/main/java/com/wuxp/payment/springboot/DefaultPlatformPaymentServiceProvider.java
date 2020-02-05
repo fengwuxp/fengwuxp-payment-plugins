@@ -2,7 +2,10 @@ package com.wuxp.payment.springboot;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.wuxp.payment.*;
+import com.wuxp.payment.AbstractPlatformPaymentService;
+import com.wuxp.payment.PaymentConfigurationProvider;
+import com.wuxp.payment.PlatformPaymentService;
+import com.wuxp.payment.PlatformPaymentServiceProvider;
 import com.wuxp.payment.alipay.AliPayAppPaymentService;
 import com.wuxp.payment.alipay.AliPayAuthCodePaymentService;
 import com.wuxp.payment.alipay.AliPayPagePaymentService;
@@ -11,17 +14,20 @@ import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
 import com.wuxp.payment.springboot.configuration.PaymentPluginProperties;
+import com.wuxp.payment.wechat.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.ObjectProvider;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
@@ -46,6 +52,7 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
     static {
         initAliPay();
+        initWechatPay();
     }
 
 
@@ -138,6 +145,19 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
         classMap.put(PaymentMethod.APP, AliPayAppPaymentService.class);
         classMap.put(PaymentMethod.SCAN_QR_CODE, AliPayQrCodePaymentService.class);
         classMap.put(PaymentMethod.PC_BROWSER, AliPayPagePaymentService.class);
+        PAYMENT_PLATFORM_CLASS_MAP.put(PaymentPlatform.ALI_PAY, classMap);
+    }
+
+    /**
+     * 初始化微信支付服务
+     */
+    private static void initWechatPay() {
+        Map<PaymentMethod, Class<? extends PlatformPaymentService>> classMap = new HashMap<>(8);
+        classMap.put(PaymentMethod.AUTH_CODE, WechatMicropayPaymentService.class);
+        classMap.put(PaymentMethod.APP, WechatAppPaymentService.class);
+        classMap.put(PaymentMethod.SCAN_QR_CODE, WechatScanPaymentService.class);
+        classMap.put(PaymentMethod.PC_BROWSER, WechatPagePaymentService.class);
+        classMap.put(PaymentMethod.JS_API, WechatJsPaymentService.class);
         PAYMENT_PLATFORM_CLASS_MAP.put(PaymentPlatform.ALI_PAY, classMap);
     }
 }

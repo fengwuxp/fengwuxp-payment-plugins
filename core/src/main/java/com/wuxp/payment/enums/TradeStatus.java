@@ -46,7 +46,11 @@ public enum TradeStatus {
     /**
      * 已退款
      */
-    REFUNDED("已退款");
+    REFUNDED("已退款"),
+
+    NOT_PAY("未支付"),
+
+    REFUND_FAILURE("退款失败");
 
     private String desc;
 }
