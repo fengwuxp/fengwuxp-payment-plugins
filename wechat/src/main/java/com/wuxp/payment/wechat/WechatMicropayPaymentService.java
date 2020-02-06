@@ -25,6 +25,10 @@ public class WechatMicropayPaymentService extends AbstractWechatPaymentService i
 
     private AuthCodePaymentHandleStrategy paymentHandleStrategy;
 
+    public WechatMicropayPaymentService () {
+        this(null);
+    }
+
     public WechatMicropayPaymentService(WechatPaymentConfig paymentConfig) {
         super(PaymentMethod.AUTH_CODE, paymentConfig);
     }

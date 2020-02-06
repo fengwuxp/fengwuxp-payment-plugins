@@ -23,6 +23,10 @@ import org.springframework.beans.BeanUtils;
 @Setter
 public class WechatJsPaymentService extends AbstractWechatPaymentService{
 
+    public WechatJsPaymentService () {
+        this(null);
+    }
+
     public WechatJsPaymentService(WechatPaymentConfig paymentConfig) {
         super(PaymentMethod.JS_API, paymentConfig);
     }
