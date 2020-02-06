@@ -158,6 +158,6 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
         classMap.put(PaymentMethod.SCAN_QR_CODE, WechatScanPaymentService.class);
         classMap.put(PaymentMethod.PC_BROWSER, WechatPagePaymentService.class);
         classMap.put(PaymentMethod.JS_API, WechatJsPaymentService.class);
-        PAYMENT_PLATFORM_CLASS_MAP.put(PaymentPlatform.ALI_PAY, classMap);
+        PAYMENT_PLATFORM_CLASS_MAP.put(PaymentPlatform.WE_CHAT, classMap);
     }
 }
