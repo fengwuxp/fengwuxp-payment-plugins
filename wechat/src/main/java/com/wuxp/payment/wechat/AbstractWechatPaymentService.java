@@ -15,6 +15,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.google.common.collect.Lists;
 import com.wuxp.payment.AbstractPlatformPaymentService;
+import com.wuxp.payment.enums.ExpireDateType;
 import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.enums.TradeStatus;
@@ -412,7 +413,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
         if (StringUtils.isNotEmpty(timeExpire)) {
             return this.formatDate(PaymentUtil.getTimeExpireByAliRule(timeExpire));
         }
-        return null;
+        return this.formatDate(PaymentUtil.getTimeExpireByAliRule(PaymentUtil.getAliRuleDesc(30, ExpireDateType.MINUTE)));
     }
 
     protected String formatDate(Date date) {
