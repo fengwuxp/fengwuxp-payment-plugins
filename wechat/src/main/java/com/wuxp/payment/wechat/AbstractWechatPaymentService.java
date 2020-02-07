@@ -111,6 +111,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             } else {
                 response.setTradeStatus(TradeStatus.SUCCESS);
             }
+            response.setRawResponse(notifyResult);
             boolean success = this.callbackTemplate.handlePaymentCallback(request.getNotifyMethod(), response, paymentBaseOrder);
             return this.getNotifyReturn(success);
         } catch (WxPayException e) {
@@ -145,6 +146,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             response.setOutTradeRefundNo(notifyResult.getReqInfo().getRefundId());
             response.setOrderAmount(notifyResult.getReqInfo().getTotalFee());
             response.setRefundAmount(notifyResult.getReqInfo().getSettlementRefundFee());
+            response.setRawResponse(notifyResult);
             boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
             return this.getNotifyReturn(success);
         } catch (WxPayException e) {
