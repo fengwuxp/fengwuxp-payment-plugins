@@ -210,7 +210,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             refundResponse.setMessage(e.getReturnMsg());
             refundResponse.setSuccess(false);
         }
-        return null;
+        return refundResponse;
     }
 
     /**
