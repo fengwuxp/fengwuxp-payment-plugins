@@ -53,9 +53,12 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
     public AbstractWechatPaymentService(PaymentMethod paymentMethod, WechatPaymentConfig paymentConfig) {
         super(paymentMethod, paymentConfig);
         this.paymentPlatform = PaymentPlatform.WE_CHAT;
+    }
+    @Override
+    public void setPaymentConfig(WechatPaymentConfig paymentConfig){
+        this.paymentConfig = paymentConfig;
         this.wxPayService = this.getWxService();
     }
-
     /**
      * 获取微信支付服务
      *
