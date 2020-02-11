@@ -15,6 +15,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.google.common.collect.Lists;
 import com.wuxp.payment.AbstractPlatformPaymentService;
+import com.wuxp.payment.enums.ExpireDateType;
 import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.enums.TradeStatus;
@@ -110,6 +111,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             } else {
                 response.setTradeStatus(TradeStatus.SUCCESS);
             }
+            response.setRawResponse(notifyResult);
             boolean success = this.callbackTemplate.handlePaymentCallback(request.getNotifyMethod(), response, paymentBaseOrder);
             return this.getNotifyReturn(success);
         } catch (WxPayException e) {
@@ -144,6 +146,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             response.setOutTradeRefundNo(notifyResult.getReqInfo().getRefundId());
             response.setOrderAmount(notifyResult.getReqInfo().getTotalFee());
             response.setRefundAmount(notifyResult.getReqInfo().getSettlementRefundFee());
+            response.setRawResponse(notifyResult);
             boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
             return this.getNotifyReturn(success);
         } catch (WxPayException e) {
@@ -207,7 +210,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             refundResponse.setMessage(e.getReturnMsg());
             refundResponse.setSuccess(false);
         }
-        return null;
+        return refundResponse;
     }
 
     /**
@@ -412,7 +415,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
         if (StringUtils.isNotEmpty(timeExpire)) {
             return this.formatDate(PaymentUtil.getTimeExpireByAliRule(timeExpire));
         }
-        return null;
+        return this.formatDate(PaymentUtil.getTimeExpireByAliRule(PaymentUtil.getAliRuleDesc(30, ExpireDateType.MINUTE)));
     }
 
     protected String formatDate(Date date) {

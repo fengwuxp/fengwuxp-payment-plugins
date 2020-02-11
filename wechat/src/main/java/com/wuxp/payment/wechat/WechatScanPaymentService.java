@@ -19,6 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class WechatScanPaymentService extends AbstractWechatPaymentService {
 
+    public WechatScanPaymentService () {
+        this(null);
+    }
 
     public WechatScanPaymentService(WechatPaymentConfig paymentConfig) {
         super(PaymentMethod.SCAN_QR_CODE, paymentConfig);
