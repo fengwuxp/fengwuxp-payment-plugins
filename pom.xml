@@ -29,6 +29,37 @@
         <module>examples</module>
     </modules>
 
+    <profiles>
+        <profile>
+            <id>编译时保留方法参数名称</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <!--1.8编译参数-保留方法名称-->
+                <compilerArgument>-parameters</compilerArgument>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>跳过测试</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>上传源代码到 Maven</id>
+            <properties>
+                <maven-source-plugin.attach>true</maven-source-plugin.attach>
+            </properties>
+        </profile>
+
+    </profiles>
+
 
     <dependencies>
 
@@ -65,5 +96,125 @@
         </dependency>
 
     </dependencies>
+
+    <distributionManagement>
+
+        <repository>
+            <!-- id 要查看setting.xml文件中的server配置，上传时需要用户和密码-->
+            <id>${dist-repo}</id>
+            <url>${dist-repo.releases.url}</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>${dist-repo}</id>
+            <url>${dist-repo.snapshots.url}</url>
+        </snapshotRepository>
+
+    </distributionManagement>
+
+    <organization>
+        <name>wupxp</name>
+        <url>https://github.com/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>fengwuxp</id>
+        </developer>
+        <developer>
+            <id>zhoux</id>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <delimiters>
+                        <delimiter>${*}</delimiter>
+                        <delimiter>@{*}</delimiter>
+                    </delimiters>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.5</version>
+
+                <configuration>
+                    <providerSelection>${maven.compiler.target}</providerSelection>
+                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <!-- 用maven编译时需要加encoding：mvn -Dfile.encoding=UTF-8 compile  -->
+                    <source/>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <debug>true</debug>
+                    <compilerArgument>${compilerArgument}</compilerArgument>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <inherited>true</inherited>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <uniqueVersion>true</uniqueVersion>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <!--默认不上传到maven库-->
+                    <attach>${maven-source-plugin.attach}</attach>
+                </configuration>
+                <inherited>true</inherited>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
