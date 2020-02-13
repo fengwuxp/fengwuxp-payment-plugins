@@ -67,8 +67,8 @@ public class WechatMicropayPaymentService extends AbstractWechatPaymentService i
         } catch (WxPayException e) {
             log.error("微信付款码支付预下单失败：{}", e);
             preOrderResponse.setSuccess(false);
-            preOrderResponse.setCode(e.getReturnCode());
-            preOrderResponse.setMessage(e.getReturnMsg());
+            preOrderResponse.setCode(e.getErrCode());
+            preOrderResponse.setMessage(e.getErrCodeDes());
         }
         if (this.paymentHandleStrategy != null) {
             this.paymentHandleStrategy.handle(preOrderResponse, request);

@@ -59,8 +59,8 @@ public class WechatJsPaymentService extends AbstractWechatPaymentService{
         } catch (WxPayException e) {
             log.error("微信JS API支付预下单失败：{}", e);
             preOrderResponse.setSuccess(false);
-            preOrderResponse.setCode(e.getReturnCode());
-            preOrderResponse.setMessage(e.getReturnMsg());
+            preOrderResponse.setCode(e.getErrCode());
+            preOrderResponse.setMessage(e.getErrCodeDes());
         }
         return preOrderResponse;
     }
