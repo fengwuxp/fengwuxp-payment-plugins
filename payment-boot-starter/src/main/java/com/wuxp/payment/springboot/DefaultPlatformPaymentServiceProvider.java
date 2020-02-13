@@ -41,8 +41,6 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
     private BeanFactory beanFactory;
 
-    private PaymentCallbackTemplateProvider paymentCallbackTemplateProvider;
-
     private Cache<PaymentPlatform, PlatformPaymentService> PAYMENT_PLATFORM_CACHE = Caffeine.newBuilder()
             .expireAfterWrite(1, TimeUnit.DAYS)
             .maximumSize(16 * 7)
@@ -60,9 +58,6 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
         if (this.paymentConfigurationProvider == null) {
 
             this.paymentConfigurationProvider = this.beanFactory.getBean(PaymentConfigurationProvider.class);
-        }
-        if (this.paymentCallbackTemplateProvider == null) {
-            this.paymentCallbackTemplateProvider = this.beanFactory.getBean(PaymentCallbackTemplateProvider.class);
         }
         PaymentPluginProperties pluginProperties = this.beanFactory.getBean(PaymentPluginProperties.class);
         PAYMENT_PLATFORM_CACHE = Caffeine.newBuilder()
@@ -116,9 +111,7 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
         if (paymentService instanceof AbstractPlatformPaymentService) {
             PaymentConfigurationProvider paymentConfigProvider = this.paymentConfigurationProvider;
-            PaymentCallbackTemplateProvider callbackTemplateProvider = this.paymentCallbackTemplateProvider;
             ((AbstractPlatformPaymentService) paymentService).setPaymentConfig(paymentConfigProvider.getPaymentConfig(partnerIdentity));
-            ((AbstractPlatformPaymentService) paymentService).setCallbackTemplate(callbackTemplateProvider.getPaymentCallbackTemplate(partnerIdentity));
             ((AbstractPlatformPaymentService) paymentService).setPaymentPlatform(paymentPlatform);
         }
 
