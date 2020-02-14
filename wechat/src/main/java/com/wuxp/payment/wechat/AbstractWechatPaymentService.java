@@ -54,11 +54,13 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
         super(paymentMethod, paymentConfig);
         this.paymentPlatform = PaymentPlatform.WE_CHAT;
     }
+
     @Override
-    public void setPaymentConfig(WechatPaymentConfig paymentConfig){
+    public void setPaymentConfig(WechatPaymentConfig paymentConfig) {
         this.paymentConfig = paymentConfig;
         this.wxPayService = this.getWxService();
     }
+
     /**
      * 获取微信支付服务
      *
@@ -150,6 +152,13 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             response.setOrderAmount(notifyResult.getReqInfo().getTotalFee());
             response.setRefundAmount(notifyResult.getReqInfo().getSettlementRefundFee());
             response.setRawResponse(notifyResult);
+            List<String> successStrings = Lists.newArrayList(WxPayConstants.ResultCode.SUCCESS, "");
+            if (!successStrings.contains(StringUtils.trimToEmpty(notifyResult.getReturnCode()).toUpperCase())
+                    || !successStrings.contains(StringUtils.trimToEmpty(notifyResult.getResultCode()).toUpperCase())) {
+                response.setTradeStatus(TradeStatus.FAILURE);
+            } else {
+                response.setTradeStatus(response.getOrderAmount().equals(response.getRefundAmount()) ? TradeStatus.REFUNDED : TradeStatus.PARTIAL_REFUND);
+            }
             boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
             return this.getNotifyReturn(success);
         } catch (WxPayException e) {
