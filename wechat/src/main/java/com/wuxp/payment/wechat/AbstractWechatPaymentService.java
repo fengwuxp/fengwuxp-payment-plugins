@@ -155,7 +155,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             List<String> successStrings = Lists.newArrayList(WxPayConstants.ResultCode.SUCCESS, "");
             if (!successStrings.contains(StringUtils.trimToEmpty(notifyResult.getReturnCode()).toUpperCase())
                     || !successStrings.contains(StringUtils.trimToEmpty(notifyResult.getResultCode()).toUpperCase())) {
-                response.setTradeStatus(TradeStatus.FAILURE);
+                response.setTradeStatus(TradeStatus.REFUND_FAILURE);
             } else {
                 response.setTradeStatus(response.getOrderAmount().equals(response.getRefundAmount()) ? TradeStatus.REFUNDED : TradeStatus.PARTIAL_REFUND);
             }
