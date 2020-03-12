@@ -69,8 +69,8 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
     private WxPayService getWxService() {
         WxPayConfig payConfig = new WxPayConfig();
         payConfig.setAppId(StringUtils.trimToNull(this.paymentConfig.getAppId()));
-        payConfig.setMchId(StringUtils.trimToNull(this.paymentConfig.getMchId()));
-        payConfig.setMchKey(StringUtils.trimToNull(this.paymentConfig.getMchKey()));
+        payConfig.setMchId(StringUtils.trimToNull(this.paymentConfig.getPartner()));
+        payConfig.setMchKey(StringUtils.trimToNull(this.paymentConfig.getPartnerSecret()));
         payConfig.setSubAppId(StringUtils.trimToNull(this.paymentConfig.getSubAppId()));
         payConfig.setSubMchId(StringUtils.trimToNull(this.paymentConfig.getSubMchId()));
         payConfig.setKeyPath(StringUtils.trimToNull(this.paymentConfig.getKeyPath()));
@@ -273,7 +273,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             final WxPayOrderNotifyResult notifyResult = this.wxPayService.parseOrderNotifyResult(xmlData);
             //验签
             notifyResult.checkResult(this.wxPayService, this.singType, false);
-            boolean verifyResult = paymentConfig.getMchId().equals(notifyResult.getMchId())
+            boolean verifyResult = paymentConfig.getPartner().equals(notifyResult.getMchId())
                     && notifyResult.getOutTradeNo().equals(request.getTradeNo())
                     && request.getOrderAmount().equals(notifyResult.getTotalFee());
             if (!verifyResult) {
@@ -303,7 +303,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             final WxPayRefundNotifyResult notifyResult = this.wxPayService.parseRefundNotifyResult(xmlData);
             //验签
             notifyResult.checkResult(this.wxPayService, this.singType, false);
-            boolean verifyResult = paymentConfig.getMchId().equals(notifyResult.getMchId())
+            boolean verifyResult = paymentConfig.getPartner().equals(notifyResult.getMchId())
                     && notifyResult.getReqInfo().getOutRefundNo().equals(request.getRefundTradeNo())
                     && request.getRefundAmount().equals(notifyResult.getReqInfo().getRefundFee());
             if (!verifyResult) {
