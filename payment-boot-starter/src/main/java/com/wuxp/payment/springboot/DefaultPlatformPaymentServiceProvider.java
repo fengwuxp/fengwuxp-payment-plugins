@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -41,10 +40,7 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
     private BeanFactory beanFactory;
 
-    private Cache<PaymentPlatform, PlatformPaymentService> PAYMENT_PLATFORM_CACHE = Caffeine.newBuilder()
-            .expireAfterWrite(1, TimeUnit.DAYS)
-            .maximumSize(16 * 7)
-            .build();
+    private Cache<PaymentPlatform, PlatformPaymentService> paymentServiceCache;
 
 
     static {
@@ -55,12 +51,12 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        BeanFactory beanFactory = this.beanFactory;
         if (this.paymentConfigurationProvider == null) {
-
-            this.paymentConfigurationProvider = this.beanFactory.getBean(PaymentConfigurationProvider.class);
+            this.paymentConfigurationProvider = beanFactory.getBean(PaymentConfigurationProvider.class);
         }
-        PaymentPluginProperties pluginProperties = this.beanFactory.getBean(PaymentPluginProperties.class);
-        PAYMENT_PLATFORM_CACHE = Caffeine.newBuilder()
+        PaymentPluginProperties pluginProperties = beanFactory.getBean(PaymentPluginProperties.class);
+        paymentServiceCache = Caffeine.newBuilder()
                 .expireAfterWrite(pluginProperties.getCacheTimeout())
                 .maximumSize(pluginProperties.getCacheSize() * 7)
                 .build();
@@ -69,21 +65,23 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
     }
 
     @Override
-    public PlatformPaymentService getPlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity) {
+    public PlatformPaymentService getPlatformPaymentService(final PlatformPaymentPartnerIdentity partnerIdentity) {
 
         PaymentPlatform paymentPlatform = partnerIdentity.getPaymentPlatform();
 
-        PlatformPaymentService platformPaymentService = PAYMENT_PLATFORM_CACHE.getIfPresent(paymentPlatform);
-        if (platformPaymentService == null) {
-            platformPaymentService = this.newInstancePlatformPaymentService(partnerIdentity);
-            PAYMENT_PLATFORM_CACHE.put(paymentPlatform, platformPaymentService);
-        }
-
+        PlatformPaymentService platformPaymentService = paymentServiceCache.get(paymentPlatform, (key) -> this.newInstancePlatformPaymentService(partnerIdentity));
+        assert platformPaymentService != null;
         if (!platformPaymentService.isEnabled()) {
             throw new RuntimeException(MessageFormat.format("平台：{0}的支付方式{1}，尚未启用", paymentPlatform, partnerIdentity.getPaymentMethod()));
         }
 
         return platformPaymentService;
+    }
+
+    @Override
+    public void removePlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity) {
+        PaymentPlatform paymentPlatform = partnerIdentity.getPaymentPlatform();
+        paymentServiceCache.invalidate(paymentPlatform);
     }
 
     protected PlatformPaymentService newInstancePlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity) {

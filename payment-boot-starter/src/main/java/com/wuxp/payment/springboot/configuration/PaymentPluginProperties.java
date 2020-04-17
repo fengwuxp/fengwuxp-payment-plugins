@@ -1,12 +1,16 @@
 package com.wuxp.payment.springboot.configuration;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
 @Data
+@ConfigurationProperties(prefix = PaymentPluginProperties.PREFIX)
 public class PaymentPluginProperties {
 
+
+    public static final String PREFIX = "payment.plugins";
 
     /**
      * 缓存的过期时间
@@ -15,7 +19,7 @@ public class PaymentPluginProperties {
     private Duration cacheTimeout = Duration.ofDays(1);
 
     /**
-     * 最大缓存的歌声
+     * 最大缓存的个数
      */
     private Integer cacheSize = 16;
 

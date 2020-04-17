@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Accessors(chain = true)
-public abstract class AbstractPaymentRequest  implements PaymentBaseRequest{
+public abstract class AbstractPaymentRequest implements PaymentBaseRequest {
 
     private static final long serialVersionUID = -8578569660707494474L;
 
@@ -24,4 +24,14 @@ public abstract class AbstractPaymentRequest  implements PaymentBaseRequest{
      */
     @NotNull
     private PaymentMethod paymentMethod;
+
+    /**
+     * 商户标识
+     */
+    private Object partnerId;
+
+    @Override
+    public <ID> ID getPartnerId() {
+        return (ID) partnerId;
+    }
 }

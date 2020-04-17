@@ -17,4 +17,11 @@ public interface PlatformPaymentServiceProvider {
     PlatformPaymentService getPlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity);
 
 
+    /**
+     * 移除一个平台服务
+     *
+     * @param partnerIdentity
+     */
+    void removePlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity);
+
 }

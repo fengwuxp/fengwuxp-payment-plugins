@@ -35,12 +35,16 @@ public class PaymentController {
      */
     @RequestMapping("/pre_oder")
     public PreOrderResponse preOrder(PreOrderRequest request) {
+
+        // TODO
+        request.setPartnerId(null);
+
         return platformPaymentService.preOrder(request);
     }
 
 
     /**
-     * 预下单测试
+     * 回调测试测试
      *
      * @param request
      * @return
@@ -54,9 +58,7 @@ public class PaymentController {
         if (orderInfo == null) {
             return null;
         }
-
         PaymentNotifyProcessRequest paymentNotifyProcessRequest = new PaymentNotifyProcessRequest();
-
         Map<String, Object> params = new HashMap<>();
         for (String key : request.getParameterMap().keySet()) {
             String[] value = request.getParameterMap().get(key);
