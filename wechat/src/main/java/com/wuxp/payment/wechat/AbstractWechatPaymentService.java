@@ -304,8 +304,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             //验签
             notifyResult.checkResult(this.wxPayService, this.singType, false);
             boolean verifyResult = paymentConfig.getPartner().equals(notifyResult.getMchId())
-                    && notifyResult.getReqInfo().getOutRefundNo().equals(request.getRefundTradeNo())
-                    && request.getRefundAmount().equals(notifyResult.getReqInfo().getRefundFee());
+                    && notifyResult.getReqInfo().getOutRefundNo().equals(request.getRefundTradeNo());
             if (!verifyResult) {
                 if (log.isDebugEnabled()) {
                     log.debug("微信退款通知，【{}】参数验证失败，{}", request.getRefundTradeNo(), notifyResult);
