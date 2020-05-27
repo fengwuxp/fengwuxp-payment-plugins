@@ -18,14 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 支付宝二维码支付
+ *
+ * @author wxup
  */
 @Slf4j
 public class AliPayQrCodePaymentService extends AbstractAliPayPaymentService {
 
-
-    public AliPayQrCodePaymentService() {
-        this(null);
-    }
 
     public AliPayQrCodePaymentService(AliPayPaymentConfig paymentConfig) {
         super(PaymentMethod.SCAN_QR_CODE, paymentConfig);

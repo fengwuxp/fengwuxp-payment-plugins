@@ -10,18 +10,24 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 抽象的支付服务
+ *
+ * @author wxup
  */
 @Slf4j
 public abstract class AbstractPlatformPaymentService<T extends PaymentConfiguration> implements PlatformPaymentService, BeanFactoryAware, InitializingBean {
 
-    // 支付回调处理
+    /**
+     * 支付回调处理
+     */
     protected PaymentCallbackTemplate callbackTemplate;
 
     protected PaymentPlatform paymentPlatform;
 
     protected PaymentMethod paymentMethod;
 
-    // 支付配置
+    /**
+     * 支付配置
+     */
     protected T paymentConfig;
 
     protected BeanFactory beanFactory;
@@ -58,8 +64,6 @@ public abstract class AbstractPlatformPaymentService<T extends PaymentConfigurat
         }
 
     }
-
-
 
 
     public void setCallbackTemplate(PaymentCallbackTemplate callbackTemplate) {

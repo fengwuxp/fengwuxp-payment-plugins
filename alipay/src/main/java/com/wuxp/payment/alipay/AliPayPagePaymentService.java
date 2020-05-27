@@ -17,14 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 支付宝页面支付
+ * @author wxup
  */
 @Slf4j
 public class AliPayPagePaymentService extends AbstractAliPayPaymentService {
 
-
-    public AliPayPagePaymentService() {
-        this(null);
-    }
 
     public AliPayPagePaymentService(AliPayPaymentConfig paymentConfig) {
         super(PaymentMethod.PC_BROWSER, paymentConfig);

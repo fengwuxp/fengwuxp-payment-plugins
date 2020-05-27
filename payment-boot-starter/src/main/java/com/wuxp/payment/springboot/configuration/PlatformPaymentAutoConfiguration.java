@@ -10,6 +10,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author wxup
+ */
 @Configuration
 @EnableConfigurationProperties(PaymentPluginProperties.class)
 @ConditionalOnProperty(prefix = PaymentPluginProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
@@ -19,7 +22,6 @@ public class PlatformPaymentAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public DelegatePlatformPaymentService delegatePlatformPaymentService() {
-
         return new DelegatePlatformPaymentService();
     }
 

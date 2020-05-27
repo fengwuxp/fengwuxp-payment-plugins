@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Memory的支付配置提供者
+ *
+ * @author wxup
  */
 @Slf4j
 @Component

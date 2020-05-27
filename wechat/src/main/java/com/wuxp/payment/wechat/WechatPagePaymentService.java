@@ -20,9 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class WechatPagePaymentService extends AbstractWechatPaymentService implements WechatPagePaymentPlugin {
 
-    public WechatPagePaymentService () {
-        this(null);
-    }
 
     public WechatPagePaymentService(WechatPaymentConfig paymentConfig) {
         super(PaymentMethod.PC_BROWSER, paymentConfig);

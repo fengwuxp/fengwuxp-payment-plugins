@@ -5,6 +5,7 @@ import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
 
 /**
  * 支付配置
+ * @author wxup
  */
 public interface PaymentConfiguration extends PlatformPaymentPartnerIdentity {
 

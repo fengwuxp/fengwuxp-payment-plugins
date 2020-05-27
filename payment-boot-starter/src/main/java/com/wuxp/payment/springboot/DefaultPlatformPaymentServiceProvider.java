@@ -29,6 +29,8 @@ import java.util.Optional;
 
 /**
  * 默认的平台支付服务提供者
+ *
+ * @author wxup
  */
 @Slf4j
 @Setter
@@ -95,21 +97,23 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
         Constructor<PlatformPaymentService>[] constructors = (Constructor<PlatformPaymentService>[]) aClass.getConstructors();
         PlatformPaymentService paymentService;
         Optional<Constructor<PlatformPaymentService>> optional = Arrays.stream(constructors)
-                .filter(constructor -> constructor.getParameters().length == 0)
+                .filter(constructor -> Arrays.stream(constructor.getParameters()).anyMatch(parameter -> {
+                    return PaymentConfiguration.class.isAssignableFrom(parameter.getType());
+                }))
                 .findFirst();
         if (!optional.isPresent()) {
-            throw new RuntimeException(MessageFormat.format("平台：{0}的支付服务：{1} 未存在空构造", aClass, paymentPlatform));
+            throw new RuntimeException(MessageFormat.format("平台：{0}的支付服务：{1} 未存在单个参数，参数类型为：PaymentConfiguration的构造", aClass, paymentPlatform));
         }
+        PaymentConfigurationProvider paymentConfigProvider = this.paymentConfigurationProvider;
         try {
-            paymentService = optional.get().newInstance();
+            paymentService = optional.get().newInstance(paymentConfigProvider.getPaymentConfig(partnerIdentity));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
 
         if (paymentService instanceof AbstractPlatformPaymentService) {
-            PaymentConfigurationProvider paymentConfigProvider = this.paymentConfigurationProvider;
-            ((AbstractPlatformPaymentService) paymentService).setPaymentConfig(paymentConfigProvider.getPaymentConfig(partnerIdentity));
+//            ((AbstractPlatformaymentService) paymentService).setPaymentConfig(paymentConfigProvider.getPaymentConfig(partnerIdentity));
             ((AbstractPlatformPaymentService) paymentService).setPaymentPlatform(paymentPlatform);
         }
 

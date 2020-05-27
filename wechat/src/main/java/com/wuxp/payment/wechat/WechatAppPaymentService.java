@@ -21,9 +21,6 @@ import org.springframework.beans.BeanUtils;
 @Slf4j
 public class WechatAppPaymentService extends AbstractWechatPaymentService {
 
-    public WechatAppPaymentService () {
-        this(null);
-    }
 
     public WechatAppPaymentService(WechatPaymentConfig paymentConfig) {
         super(PaymentMethod.APP, paymentConfig);

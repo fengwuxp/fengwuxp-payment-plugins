@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 支付宝授权码支付
+ * @author wxup
  */
 @Slf4j
 @Setter
@@ -28,14 +29,9 @@ public class AliPayAuthCodePaymentService extends AbstractAliPayPaymentService i
 
     private AuthCodePaymentHandleStrategy paymentHandleStrategy;
 
-    public AliPayAuthCodePaymentService() {
-        this(null);
-    }
-
     public AliPayAuthCodePaymentService(AliPayPaymentConfig paymentConfig) {
         super(PaymentMethod.AUTH_CODE, paymentConfig);
     }
-
 
     @Override
     public PreOrderResponse<Void> payment(AuthCodePaymentRequest req) {
