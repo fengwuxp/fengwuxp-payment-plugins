@@ -38,6 +38,8 @@ public class AliPayAuthCodePaymentService extends AbstractAliPayPaymentService i
 
 
         AlipayTradePayRequest request = new AlipayTradePayRequest();
+        request.setNotifyUrl(req.getNotifyUrl());
+        request.setReturnUrl(req.getReturnUrl());
         AlipayTradePayModel model = new AlipayTradePayModel();
         model.setBody(StringUtils.abbreviate(req.getDescription().replaceAll("[^0-9a-zA-Z\\u4e00-\\u9fa5 ]", ""), 600));
         model.setSubject(req.getSubject());

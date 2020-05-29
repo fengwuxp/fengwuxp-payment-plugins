@@ -54,6 +54,8 @@ public class AliPayAppPaymentService extends AbstractAliPayPaymentService {
         if (log.isDebugEnabled()) {
             log.debug("支付请求参数：{}", model);
         }
+        request.setNotifyUrl(req.getNotifyUrl());
+        request.setReturnUrl(req.getReturnUrl());
         PreOrderResponse<String> preOrderResponse = new PreOrderResponse<String>(req);
         try {
 

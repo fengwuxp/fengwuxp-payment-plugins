@@ -51,6 +51,8 @@ public class AliPayQrCodePaymentService extends AbstractAliPayPaymentService {
         if (log.isDebugEnabled()) {
             log.debug("支付请求参数：{}", model);
         }
+        request.setNotifyUrl(req.getNotifyUrl());
+        request.setReturnUrl(req.getReturnUrl());
         //实例化客户端
         AlipayClient alipayClient = this.alipayClient;
         PreOrderResponse<AliPayQrCodeTradePayResult> preOrderResponse = new PreOrderResponse<>(req);

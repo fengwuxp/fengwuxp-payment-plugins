@@ -26,7 +26,6 @@ import com.wuxp.payment.resp.QueryRefundOrderResponse;
 import com.wuxp.payment.utils.PaymentUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -37,6 +36,7 @@ import java.util.Map;
 
 /**
  * 支付宝支付的抽象实现
+ * @author wxup
  */
 @Slf4j
 public abstract class AbstractAliPayPaymentService extends AbstractPlatformPaymentService<AliPayPaymentConfig> {
