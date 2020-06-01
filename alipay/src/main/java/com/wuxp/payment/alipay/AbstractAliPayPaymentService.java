@@ -139,20 +139,18 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         if (payAmount == null) {
             buyerPayAmount = request.getOrderAmount();
         } else {
-            buyerPayAmount = BigDecimal.valueOf(Double.parseDouble(payAmount)).intValue();
+            buyerPayAmount = new BigDecimal(payAmount).intValue();
         }
         TradeStatus status = this.transformTradeStatus(tradeStatus, buyerPayAmount);
         response.setTradeStatus(status)
                 .setBuyerPayAmount(buyerPayAmount)
                 .setUseSandboxEnv(this.isUseSandboxEnv());
-        Object buyerLogonId = notifyParams.get("buyer_logon_id");
-        if (buyerLogonId != null) {
-            response.setPayerAccount(buyerLogonId.toString());
-        }
-        Object receiptAmount = notifyParams.get("receipt_amount");
+        String buyerLogonId = notifyParams.get("buyer_logon_id");
+        response.setPayerAccount(buyerLogonId);
+        String receiptAmount = notifyParams.get("receipt_amount");
         if (receiptAmount != null) {
-            response.setReceiptAmount(((BigDecimal) receiptAmount).intValue());
-            // response.setReceiptAmount(PaymentUtil.yuanToFen(receiptAmount.toString()));
+            // TODO实收金额验证
+            response.setReceiptAmount((new BigDecimal(receiptAmount)).intValue());
         }
 
         // 支付处理订单通知
