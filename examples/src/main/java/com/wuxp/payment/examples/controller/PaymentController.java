@@ -91,8 +91,6 @@ public class PaymentController {
             return null;
         }
         PaymentNotifyProcessRequest paymentNotifyProcessRequest = new PaymentNotifyProcessRequest();
-
-
         paymentNotifyProcessRequest.setNotifyMethod(notifyMethod)
                 .setNotifyParams(requestParams)
                 .setRequestBody(requestBody)
