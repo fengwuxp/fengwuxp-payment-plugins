@@ -36,6 +36,7 @@ import java.util.Map;
 
 /**
  * 支付宝支付的抽象实现
+ *
  * @author wxup
  */
 @Slf4j
@@ -103,15 +104,19 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
 
 
     /**
-     * 支付宝支付异步通知处理
+     * 支付宝支付异步通知处理  {https://docs.open.alipay.com/194/103296}
      *
      * @param request
      * @param paymentBaseOrder 订单信息
      * @return
-     * @docs https://docs.open.alipay.com/194/103296
      */
     @Override
     public String paymentProcess(PaymentNotifyProcessRequest request, PaymentBaseOrder paymentBaseOrder) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("支付异步通知：request = {}  ", paymentBaseOrder);
+            log.debug("支付异步通知：order = {}  ", paymentBaseOrder);
+        }
 
         // 验证签名
         if (!this.verifyPaymentNotifyRequest(request)) {
@@ -124,16 +129,21 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         QueryOrderResponse response = new QueryOrderResponse();
         response.setPaymentPlatform(PaymentPlatform.ALI_PAY);
         response.setPaymentMethod(paymentBaseOrder.getPaymentMethod());
-        Map<String, Object> notifyParams = request.getNotifyParams();
-        response.setOutTradeNo(notifyParams.get("trade_no").toString());
-        response.setTradeNo(notifyParams.get("out_trade_no").toString());
-        response.setOrderAmount(PaymentUtil.yuanToFen(notifyParams.get("total_amount").toString()));
-
-        String tradeStatus = notifyParams.get("trade_status").toString();
-        BigDecimal buyerPayAmount = (BigDecimal) notifyParams.getOrDefault("buyer_pay_amount", BigDecimal.valueOf(request.getOrderAmount()));
-        TradeStatus status = this.transformTradeStatus(tradeStatus, buyerPayAmount.intValue());
+        Map<String, String> notifyParams = request.getNotifyParams();
+        response.setOutTradeNo(notifyParams.get("trade_no"));
+        response.setTradeNo(notifyParams.get("out_trade_no"));
+        response.setOrderAmount(PaymentUtil.yuanToFen(notifyParams.get("total_amount")));
+        String tradeStatus = notifyParams.get("trade_status");
+        Integer buyerPayAmount;
+        String payAmount = notifyParams.get("buyer_pay_amount");
+        if (payAmount == null) {
+            buyerPayAmount = request.getOrderAmount();
+        } else {
+            buyerPayAmount = BigDecimal.valueOf(Double.parseDouble(payAmount)).intValue();
+        }
+        TradeStatus status = this.transformTradeStatus(tradeStatus, buyerPayAmount);
         response.setTradeStatus(status)
-                .setBuyerPayAmount(buyerPayAmount.intValue())
+                .setBuyerPayAmount(buyerPayAmount)
                 .setUseSandboxEnv(this.isUseSandboxEnv());
         Object buyerLogonId = notifyParams.get("buyer_logon_id");
         if (buyerLogonId != null) {
@@ -170,7 +180,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         QueryRefundOrderResponse response = new QueryRefundOrderResponse();
         response.setPaymentPlatform(PaymentPlatform.ALI_PAY);
         response.setPaymentMethod(paymentBaseOrder.getPaymentMethod());
-        Map<String, Object> notifyParams = request.getNotifyParams();
+        Map<String, String> notifyParams = request.getNotifyParams();
         response.setTradeRefundNo(request.getRefundTradeNo());
         response.setOutTradeRefundNo(notifyParams.get("out_biz_no").toString());
         response.setOrderAmount(PaymentUtil.yuanToFen(notifyParams.get("total_amount").toString()));
@@ -382,9 +392,15 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
 
         //参数验证
         String tradeNo = request.getTradeNo();
-        Map<String, Object> params = request.getNotifyParams();
+        Map<String, String> params = request.getNotifyParams();
         BigDecimal amountBigDecimal = PaymentUtil.fen2Yun(request.getOrderAmount());
-        boolean paramVerify = paymentConfig.getPartner().equals(params.get("seller_id"))
+
+        String partner = paymentConfig.getPartner();
+        if (partner == null) {
+            log.error("验证支付宝异步通知失败，商户号不能为null");
+            return false;
+        }
+        boolean paramVerify = partner.equals(params.get("seller_id"))
                 && tradeNo.equals(params.get("out_trade_no"))
                 && amountBigDecimal.toString().equals(params.get("total_amount"));
         if (!paramVerify) {
@@ -405,7 +421,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
     private boolean verifyRefundNotifyRequest(RefundNotifyProcessRequest request) {
         AliPayPaymentConfig paymentConfig = this.paymentConfig;
         //参数验证
-        Map<String, Object> params = request.getNotifyParams();
+        Map<String, String> params = request.getNotifyParams();
         String refundSn = request.getRefundTradeNo();
         BigDecimal refundAmount = PaymentUtil.fen2Yun(request.getRefundAmount());
 
@@ -428,7 +444,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * @param params
      * @return
      */
-    private boolean verifySign(Map<String, Object> params) {
+    private boolean verifySign(Map<String, String> params) {
 
         //签名验证
         Map<String, String> stringStringHashMap = new HashMap<String, String>();

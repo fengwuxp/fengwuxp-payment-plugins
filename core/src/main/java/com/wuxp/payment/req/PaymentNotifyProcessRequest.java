@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * 支付通知参数处理
+ *
+ * @author wxup
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -40,7 +42,7 @@ public class PaymentNotifyProcessRequest extends AbstractPaymentRequest {
     /**
      * 支付通知表单参数
      */
-    private Map<String, Object> notifyParams;
+    private Map<String, String> notifyParams;
 
     /**
      * 如果通知的内容在 RequestBody中，需要该参数

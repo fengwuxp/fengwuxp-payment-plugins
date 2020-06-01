@@ -9,9 +9,7 @@ import com.wuxp.payment.req.PaymentNotifyProcessRequest;
 import com.wuxp.payment.req.PreOrderRequest;
 import com.wuxp.payment.resp.PreOrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -59,7 +57,7 @@ public class PaymentController {
             return null;
         }
         PaymentNotifyProcessRequest paymentNotifyProcessRequest = new PaymentNotifyProcessRequest();
-        Map<String, Object> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         for (String key : request.getParameterMap().keySet()) {
             String[] value = request.getParameterMap().get(key);
             if (value != null && value.length > 0) {
@@ -69,6 +67,35 @@ public class PaymentController {
 
         paymentNotifyProcessRequest.setNotifyMethod(notifyMethod)
                 .setNotifyParams(params)
+                .setTradeNo(treadNo)
+                .setOrderAmount(orderInfo.getOrderAmount())
+                .setPaymentMethod(orderInfo.getPaymentMethod())
+                .setPaymentPlatform(orderInfo.getPaymentPlatform());
+
+        return platformPaymentService.paymentProcess(paymentNotifyProcessRequest, orderInfo);
+    }
+
+    /**
+     * 回调测试测试
+     *
+     * @return
+     */
+    @RequestMapping("/notify_2/{notifyMethod}/{treadNo}/")
+    public String paymentNotifyCallbackByEntry(@PathVariable NotifyMethod notifyMethod,
+                                               @PathVariable String treadNo,
+                                               @RequestBody String requestBody,
+                                               @RequestParam Map<String, String> requestParams) {
+
+        OrderInfo orderInfo = orderService.findOrderByNo(treadNo);
+        if (orderInfo == null) {
+            return null;
+        }
+        PaymentNotifyProcessRequest paymentNotifyProcessRequest = new PaymentNotifyProcessRequest();
+
+
+        paymentNotifyProcessRequest.setNotifyMethod(notifyMethod)
+                .setNotifyParams(requestParams)
+                .setRequestBody(requestBody)
                 .setTradeNo(treadNo)
                 .setOrderAmount(orderInfo.getOrderAmount())
                 .setPaymentMethod(orderInfo.getPaymentMethod())

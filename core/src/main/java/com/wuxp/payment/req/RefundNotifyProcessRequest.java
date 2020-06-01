@@ -49,7 +49,7 @@ public class RefundNotifyProcessRequest extends AbstractPaymentRequest {
     /**
      * 支付通知表单参数
      */
-    private Map<String, Object> notifyParams;
+    private Map<String, String> notifyParams;
 
     /**
      * 如果通知的内容在 RequestBody中，需要该参数
