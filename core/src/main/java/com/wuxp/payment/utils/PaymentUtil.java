@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * @author wxup
+ */
 public final class PaymentUtil {
 
     private static final BigDecimal MULTIPLIER = new BigDecimal(100);

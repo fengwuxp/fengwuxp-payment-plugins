@@ -13,6 +13,7 @@ import com.wuxp.payment.resp.QueryRefundOrderResponse;
 /**
  * 支付插件接口
  * 适配不同第三方平台的支付，实现统一调用
+ * @author wxup
  */
 public interface PaymentPlugin {
 

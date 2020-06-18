@@ -7,6 +7,9 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author wxup
+ */
 @Data
 @Accessors(chain = true)
 public abstract class AbstractPaymentRequest implements PaymentBaseRequest {

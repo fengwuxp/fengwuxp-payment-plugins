@@ -5,6 +5,8 @@ import lombok.Getter;
 
 /**
  * 支付方式
+ *
+ * @author wxup
  */
 @AllArgsConstructor
 @Getter
@@ -46,6 +48,6 @@ public enum PaymentMethod {
      */
     AUTH_CODE("付款码支付");
 
-    private String desc;
+    private final String desc;
 
 }

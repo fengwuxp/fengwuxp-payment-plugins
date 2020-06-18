@@ -24,7 +24,7 @@ public abstract class AbstractPaymentConfiguration implements PaymentConfigurati
     /**
      * AppSecret
      */
-    protected String AppSecret;
+    protected String appSecret;
 
     /**
      * 合作者(商户号)

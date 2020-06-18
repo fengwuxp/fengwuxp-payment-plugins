@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 /**
  * 预下单请求
  * 如果有更复杂的支付参数，可以通过继承该类做扩展
+ *
+ * @author wxup
  * @see PreOrderRequestFactory
  */
 @Data

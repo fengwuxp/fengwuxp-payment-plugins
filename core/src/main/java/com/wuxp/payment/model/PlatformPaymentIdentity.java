@@ -4,6 +4,8 @@ import com.wuxp.payment.enums.PaymentPlatform;
 
 /**
  * 平台标识
+ *
+ * @author wxup
  */
 public interface PlatformPaymentIdentity {
 

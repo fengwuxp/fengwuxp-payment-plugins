@@ -2,9 +2,16 @@ package com.wuxp.payment.enums;
 
 /**
  * 支付平台
+ *
+ * @author wxup
  */
 public enum PaymentPlatform {
 
+
+    /**
+     * 站内支付
+     */
+    INTERNAL,
 
     /**
      * 支付宝
