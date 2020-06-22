@@ -3,6 +3,8 @@ package com.wuxp.payment.model;
 
 /**
  * 支付订单
+ *
+ * @author wxup
  */
 public interface PaymentBaseOrder extends PlatformPaymentPartnerIdentity {
 

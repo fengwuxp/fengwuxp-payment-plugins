@@ -8,6 +8,8 @@ import com.wuxp.payment.resp.QueryRefundOrderResponse;
 
 /**
  * 支付回调模处理模板方法
+ *
+ * @author wxup
  */
 public interface PaymentCallbackTemplate {
 

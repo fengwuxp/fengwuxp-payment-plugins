@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +43,7 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
     private BeanFactory beanFactory;
 
-    private Cache<PaymentPlatform, PlatformPaymentService> paymentServiceCache;
+    private Cache<String, PlatformPaymentService> paymentServiceCache;
 
 
     static {
@@ -70,8 +71,8 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
     public PlatformPaymentService getPlatformPaymentService(final PlatformPaymentPartnerIdentity partnerIdentity) {
 
         PaymentPlatform paymentPlatform = partnerIdentity.getPaymentPlatform();
-
-        PlatformPaymentService platformPaymentService = paymentServiceCache.get(paymentPlatform, (key) -> this.newInstancePlatformPaymentService(partnerIdentity));
+        String serviceKey = getCacheServiceKey(partnerIdentity);
+        PlatformPaymentService platformPaymentService = paymentServiceCache.get(serviceKey, (key) -> this.newInstancePlatformPaymentService(partnerIdentity));
         assert platformPaymentService != null;
         if (!platformPaymentService.isEnabled()) {
             throw new RuntimeException(MessageFormat.format("平台：{0}的支付方式{1}，尚未启用", paymentPlatform, partnerIdentity.getPaymentMethod()));
@@ -80,10 +81,11 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
         return platformPaymentService;
     }
 
+
     @Override
     public void removePlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity) {
-        PaymentPlatform paymentPlatform = partnerIdentity.getPaymentPlatform();
-        paymentServiceCache.invalidate(paymentPlatform);
+        String serviceKey = getCacheServiceKey(partnerIdentity);
+        paymentServiceCache.invalidate(serviceKey);
     }
 
     protected PlatformPaymentService newInstancePlatformPaymentService(PlatformPaymentPartnerIdentity partnerIdentity) {
@@ -132,6 +134,14 @@ public class DefaultPlatformPaymentServiceProvider implements PlatformPaymentSer
 
 
         return paymentService;
+    }
+
+    private static String getCacheServiceKey(PlatformPaymentPartnerIdentity partnerIdentity) {
+        String serviceKey = partnerIdentity.getPaymentPlatform().name() + "_" + partnerIdentity.getPaymentMethod().name();
+        if (partnerIdentity.getPartnerId() != null) {
+            serviceKey = serviceKey + "_" + partnerIdentity.getPartnerId().toString();
+        }
+        return serviceKey;
     }
 
     /**

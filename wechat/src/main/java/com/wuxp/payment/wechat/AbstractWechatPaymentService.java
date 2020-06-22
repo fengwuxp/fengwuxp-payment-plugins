@@ -34,7 +34,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: zhuox
@@ -118,10 +117,10 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             }
             response.setRawResponse(notifyResult);
             boolean success = this.callbackTemplate.handlePaymentCallback(request.getNotifyMethod(), response, paymentBaseOrder);
-            return this.getNotifyReturn(success);
+            return this.getNotifyReturnCode(success);
         } catch (WxPayException e) {
-            log.error("微信支付异步通知失败：{}", e);
-            return WxPayNotifyResponse.fail("失败");
+            log.error("微信支付异步通知失败：", e);
+            return this.getNotifyReturnCode(false);
         }
     }
 
@@ -160,10 +159,10 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
                 response.setTradeStatus(response.getOrderAmount().equals(response.getRefundAmount()) ? TradeStatus.REFUNDED : TradeStatus.PARTIAL_REFUND);
             }
             boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
-            return this.getNotifyReturn(success);
+            return this.getNotifyReturnCode(success);
         } catch (WxPayException e) {
-            log.error("微信支付异步通知失败：{}", e);
-            return WxPayNotifyResponse.fail("失败");
+            log.error("微信支付异步通知失败：", e);
+            return this.getNotifyReturnCode(false);
         }
     }
 
@@ -260,6 +259,11 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
         return orderResponse;
     }
 
+    @Override
+    public String getNotifyReturnCode(boolean success) {
+        return success ? WxPayNotifyResponse.success("成功") : WxPayNotifyResponse.fail("失败");
+    }
+
     /**
      * 验证支付通知
      *
@@ -320,12 +324,17 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
     }
 
     /**
-     * SUCCESS—支付成功,REFUND—转入退款,NOTPAY—未支付,CLOSED—已关闭,REVOKED—已撤销（刷卡支付）,USERPAYING--用户支付中
-     * ,PAYERROR--支付失败(其他原因，如银行返回失败)
+     * SUCCESS -—支付成功,
+     * REFUND —-转入退款,
+     * NOTPAY —-未支付,
+     * CLOSED —-已关闭,
+     * REVOKED —-已撤销（刷卡支付）,
+     * USERPAYING --用户支付中
+     * ,PAYERROR --支付失败(其他原因，如银行返回失败)
      */
     @AllArgsConstructor
     @Getter
-    protected enum WechatTradeStatus {
+    protected enum WeChatTradeStatus {
 
         SUCCESS("支付成功"),
 
@@ -350,25 +359,25 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
      * @return
      */
     private TradeStatus transformTradeStatus(String tradeState) {
-        if (tradeState.equals(WechatTradeStatus.SUCCESS.name())) {
+        if (tradeState.equals(WeChatTradeStatus.SUCCESS.name())) {
             return TradeStatus.SUCCESS;
         }
-        if (tradeState.equals(WechatTradeStatus.REFUND.name())) {
+        if (tradeState.equals(WeChatTradeStatus.REFUND.name())) {
             return TradeStatus.WAIT_REFUND;
         }
-        if (tradeState.equals(WechatTradeStatus.NOTPAY.name())) {
+        if (tradeState.equals(WeChatTradeStatus.NOTPAY.name())) {
             return TradeStatus.NOT_PAY;
         }
-        if (tradeState.equals(WechatTradeStatus.CLOSED.name())) {
+        if (tradeState.equals(WeChatTradeStatus.CLOSED.name())) {
             return TradeStatus.CLOSED;
         }
-        if (tradeState.equals(WechatTradeStatus.REVOKED.name())) {
+        if (tradeState.equals(WeChatTradeStatus.REVOKED.name())) {
             return TradeStatus.CLOSED;
         }
-        if (tradeState.equals(WechatTradeStatus.USERPAYING.name())) {
+        if (tradeState.equals(WeChatTradeStatus.USERPAYING.name())) {
             return TradeStatus.WAIT_PAY;
         }
-        if (tradeState.equals(WechatTradeStatus.PAYERROR.name())) {
+        if (tradeState.equals(WeChatTradeStatus.PAYERROR.name())) {
             return TradeStatus.FAILURE;
         }
         return TradeStatus.UNKNOWN;
@@ -418,9 +427,6 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
         return TradeStatus.UNKNOWN;
     }
 
-    private String getNotifyReturn(boolean success) {
-        return success ? WxPayNotifyResponse.success("成功") : WxPayNotifyResponse.fail("失败");
-    }
 
     protected String getTimeExpire(String timeExpire) {
         if (StringUtils.isNotEmpty(timeExpire)) {

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * 用于标记应用内的商家唯一标识
+ *
+ * @author wxup
  */
 public interface PartnerIdentity extends Serializable {
 

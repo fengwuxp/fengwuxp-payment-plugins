@@ -123,7 +123,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
             if (log.isDebugEnabled()) {
                 log.debug("支付宝支付通知：【{}】签名验证失败", request);
             }
-            return this.getNotifyReturn(false);
+            return this.getNotifyReturnCode(false);
         }
 
         QueryOrderResponse response = new QueryOrderResponse();
@@ -155,7 +155,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
 
         // 支付处理订单通知
         boolean r = this.callbackTemplate.handlePaymentCallback(request.getNotifyMethod(), response, paymentBaseOrder);
-        return this.getNotifyReturn(r);
+        return this.getNotifyReturnCode(r);
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
             if (log.isDebugEnabled()) {
                 log.debug("支付宝支付通知：【{}】签名验证失败", request);
             }
-            return this.getNotifyReturn(false);
+            return this.getNotifyReturnCode(false);
         }
         // 退款处理订单通知
         QueryRefundOrderResponse response = new QueryRefundOrderResponse();
@@ -184,7 +184,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         response.setOrderAmount(PaymentUtil.yuanToFen(notifyParams.get("total_amount").toString()));
         response.setRefundAmount(PaymentUtil.yuanToFen(notifyParams.get("refund_fee").toString()));
         boolean r = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
-        return this.getNotifyReturn(r);
+        return this.getNotifyReturnCode(r);
     }
 
 
@@ -321,6 +321,11 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         }
 
         return refundOrderResponse;
+    }
+
+    @Override
+    public String getNotifyReturnCode(boolean success) {
+        return success ? PAYMENT_RESULT_HANDLE_SUCCESS_RETURN_CODE : PAYMENT_RESULT_HANDLE_FAILURE_RETURN_CODE;
     }
 
 
@@ -469,9 +474,5 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         return false;
     }
 
-
-    private String getNotifyReturn(boolean success) {
-        return success ? PAYMENT_RESULT_HANDLE_SUCCESS_RETURN_CODE : PAYMENT_RESULT_HANDLE_FAILURE_RETURN_CODE;
-    }
 
 }

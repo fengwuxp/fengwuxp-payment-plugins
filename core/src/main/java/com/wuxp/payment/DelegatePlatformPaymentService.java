@@ -2,6 +2,8 @@ package com.wuxp.payment;
 
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.model.PaymentBaseOrder;
+import com.wuxp.payment.model.PlatformPaymentIdentity;
+import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
 import com.wuxp.payment.req.*;
 import com.wuxp.payment.resp.OrderRefundResponse;
 import com.wuxp.payment.resp.PreOrderResponse;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 代理的平台服务提供者
+ *
+ * @author wxup
  */
 @Slf4j
 @Setter
@@ -68,5 +72,11 @@ public class DelegatePlatformPaymentService implements PlatformPaymentService, B
     @Override
     public QueryRefundOrderResponse queryOrderRefund(QueryRefundRequest request) {
         return this.platformPaymentServiceProvider.getPlatformPaymentService(request).queryOrderRefund(request);
+    }
+
+
+    @Override
+    public String getNotifyReturnCode(boolean success, PlatformPaymentPartnerIdentity partnerIdentity) {
+        return this.platformPaymentServiceProvider.getPlatformPaymentService(partnerIdentity).getNotifyReturnCode(success);
     }
 }

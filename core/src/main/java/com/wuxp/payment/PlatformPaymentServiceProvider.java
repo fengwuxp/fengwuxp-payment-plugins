@@ -4,6 +4,7 @@ import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
 
 /**
  * 平台服务提供者
+ * @author wxup
  */
 public interface PlatformPaymentServiceProvider {
 

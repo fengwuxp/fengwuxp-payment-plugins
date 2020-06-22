@@ -18,11 +18,13 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 支付宝app支付
+ *
  * @author wxup
  */
 @Slf4j
 public class AliPayAppPaymentService extends AbstractAliPayPaymentService {
 
+    private static final String ALI_APP_PAY_PRODUCT_CODE = "QUICK_MSECURITY_PAY";
 
     public AliPayAppPaymentService(AliPayPaymentConfig paymentConfig) {
         super(PaymentMethod.APP, paymentConfig);
@@ -49,7 +51,7 @@ public class AliPayAppPaymentService extends AbstractAliPayPaymentService {
             model.setTimeoutExpress(PaymentUtil.getAliRuleDesc(30, ExpireDateType.MINUTE));
         }
         model.setTotalAmount(PaymentUtil.fen2Yun(req.getOrderAmount()).toString());
-        model.setProductCode("QUICK_MSECURITY_PAY");
+        model.setProductCode(ALI_APP_PAY_PRODUCT_CODE);
         request.setBizModel(model);
         if (log.isDebugEnabled()) {
             log.debug("支付请求参数：{}", model);
