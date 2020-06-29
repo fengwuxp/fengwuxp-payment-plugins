@@ -50,8 +50,8 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
     protected boolean isUseSandboxEnv = false;
 
     public AbstractWechatPaymentService(PaymentMethod paymentMethod, WechatPaymentConfig paymentConfig) {
-        super(paymentMethod, paymentConfig);
-        this.paymentPlatform = PaymentPlatform.WE_CHAT;
+        super(PaymentPlatform.WE_CHAT, paymentMethod, paymentConfig);
+        this.wxPayService = this.getWxService();
     }
 
     @Override
@@ -66,13 +66,16 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
      * @return
      */
     private WxPayService getWxService() {
+        WechatPaymentConfig paymentConfig = this.paymentConfig;
+        assert paymentConfig != null;
+        assert paymentConfig.getPartnerSecret() != null;
         WxPayConfig payConfig = new WxPayConfig();
-        payConfig.setAppId(StringUtils.trimToNull(this.paymentConfig.getAppId()));
-        payConfig.setMchId(StringUtils.trimToNull(this.paymentConfig.getPartner()));
-        payConfig.setMchKey(StringUtils.trimToNull(this.paymentConfig.getPartnerSecret()));
-        payConfig.setSubAppId(StringUtils.trimToNull(this.paymentConfig.getSubAppId()));
-        payConfig.setSubMchId(StringUtils.trimToNull(this.paymentConfig.getSubMchId()));
-        payConfig.setKeyPath(StringUtils.trimToNull(this.paymentConfig.getKeyPath()));
+        payConfig.setAppId(StringUtils.trimToNull(paymentConfig.getAppId()));
+        payConfig.setMchId(StringUtils.trimToNull(paymentConfig.getPartner()));
+        payConfig.setMchKey(StringUtils.trimToNull(paymentConfig.getPartnerSecret()));
+        payConfig.setSubAppId(StringUtils.trimToNull(paymentConfig.getSubAppId()));
+        payConfig.setSubMchId(StringUtils.trimToNull(paymentConfig.getSubMchId()));
+        payConfig.setKeyPath(StringUtils.trimToNull(paymentConfig.getKeyPath()));
         payConfig.setSignType(this.singType);
         // 可以指定是否使用沙箱环境
         payConfig.setUseSandboxEnv(this.isUseSandboxEnv);

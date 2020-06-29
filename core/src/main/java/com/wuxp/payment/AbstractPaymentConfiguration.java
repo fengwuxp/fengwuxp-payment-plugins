@@ -32,7 +32,7 @@ public abstract class AbstractPaymentConfiguration implements PaymentConfigurati
     protected String partner;
 
     /**
-     * 商户加密key
+     * 商户加密key，需要在微信商户平台进行设置
      */
     protected String partnerSecret;
 

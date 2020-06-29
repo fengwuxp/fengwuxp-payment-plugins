@@ -19,6 +19,7 @@
 
     <properties>
         <payment-plugin-version>1.0.0-SNAPSHOT</payment-plugin-version>
+        <alipay-easysdk-version>2.0.0</alipay-easysdk-version>
     </properties>
 
     <modules>

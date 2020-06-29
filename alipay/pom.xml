@@ -27,6 +27,12 @@
             <version>4.9.13.ALL</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.alipay.sdk</groupId>-->
+<!--            <artifactId>alipay-easysdk</artifactId>-->
+<!--            <version>${alipay-easysdk-version}</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>

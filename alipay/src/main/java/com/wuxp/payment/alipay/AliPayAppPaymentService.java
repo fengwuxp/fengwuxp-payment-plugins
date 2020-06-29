@@ -69,12 +69,13 @@ public class AliPayAppPaymentService extends AbstractAliPayPaymentService {
                     log.debug("支付响应 :{}", response.getBody());
                 }
                 preOrderResponse
-                        .setTradeNo(response.getMerchantOrderNo())
+                        .setTradeNo(req.getTradeNo())
                         .setOutTradeNo(response.getTradeNo())
                         .setUseSandboxEnv(this.isUseSandboxEnv())
-                        .setOrderAmount(PaymentUtil.yuanToFen(response.getTotalAmount()))
+                        .setOrderAmount(req.getOrderAmount())
                         .setResult(response.getBody())
-                        .setRawResponse(response);
+                        .setRawResponse(response)
+                        .setSuccess(true);
 
             } else {
                 preOrderResponse.setSuccess(false);

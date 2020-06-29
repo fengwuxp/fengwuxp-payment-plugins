@@ -59,8 +59,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
 
 
     public AbstractAliPayPaymentService(PaymentMethod paymentMethod, AliPayPaymentConfig paymentConfig) {
-        super(paymentMethod, paymentConfig);
-        this.paymentPlatform = PaymentPlatform.ALI_PAY;
+        super(PaymentPlatform.ALI_PAY,paymentMethod, paymentConfig);
         this.alipayClient = this.getAliPayClient();
     }
 
@@ -335,6 +334,7 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * @return
      */
     protected AlipayClient getAliPayClient() {
+        AliPayPaymentConfig paymentConfig = this.paymentConfig;
         return new DefaultAlipayClient(
                 paymentConfig.getServiceUrl(),
                 paymentConfig.getAppId(),

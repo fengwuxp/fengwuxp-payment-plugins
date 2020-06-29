@@ -29,6 +29,9 @@ public class PreOrderResponse<T> extends AbstractPaymentResponse {
 
     /**
      * 第三方交易流水号
+     * <p>
+     *     1：由于支付宝App支付并没有发起真正预下单，该字段要从回掉中获取
+     * </p>
      */
     private String outTradeNo;
 
