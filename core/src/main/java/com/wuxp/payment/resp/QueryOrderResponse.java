@@ -6,16 +6,19 @@ import com.wuxp.payment.req.PaymentBaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * 订单查询响应信息
+ * @author wuxp
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class QueryOrderResponse extends AbstractPaymentResponse {
 

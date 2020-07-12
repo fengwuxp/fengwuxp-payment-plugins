@@ -68,7 +68,7 @@ public class PaymentController {
         paymentNotifyProcessRequest.setNotifyMethod(notifyMethod)
                 .setNotifyParams(params)
                 .setTradeNo(treadNo)
-                .setOrderAmount(orderInfo.getOrderAmount())
+                .setOrderAmount(orderInfo.getAmount())
                 .setPaymentMethod(orderInfo.getPaymentMethod())
                 .setPaymentPlatform(orderInfo.getPaymentPlatform());
 
@@ -95,7 +95,7 @@ public class PaymentController {
                 .setNotifyParams(requestParams)
                 .setRequestBody(requestBody)
                 .setTradeNo(treadNo)
-                .setOrderAmount(orderInfo.getOrderAmount())
+                .setOrderAmount(orderInfo.getAmount())
                 .setPaymentMethod(orderInfo.getPaymentMethod())
                 .setPaymentPlatform(orderInfo.getPaymentPlatform());
 

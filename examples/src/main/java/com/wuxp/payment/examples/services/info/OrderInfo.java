@@ -23,7 +23,7 @@ public class OrderInfo implements PaymentBaseOrder {
 
     private PaymentPlatform paymentPlatform;
 
-    private Integer orderAmount;
+    private Integer amount;
 
     public Long getParentId() {
         return parentId;

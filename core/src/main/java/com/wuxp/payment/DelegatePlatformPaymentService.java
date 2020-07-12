@@ -4,6 +4,7 @@ import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.model.PaymentBaseOrder;
 import com.wuxp.payment.model.PlatformPaymentIdentity;
 import com.wuxp.payment.model.PlatformPaymentPartnerIdentity;
+import com.wuxp.payment.model.RefundBaseOrder;
 import com.wuxp.payment.req.*;
 import com.wuxp.payment.resp.OrderRefundResponse;
 import com.wuxp.payment.resp.PreOrderResponse;
@@ -49,9 +50,9 @@ public class DelegatePlatformPaymentService implements PlatformPaymentService, B
     }
 
     @Override
-    public String refundProcess(RefundNotifyProcessRequest request, PaymentBaseOrder paymentBaseOrder) {
-        PlatformPaymentService platformPaymentService = this.platformPaymentServiceProvider.getPlatformPaymentService(paymentBaseOrder);
-        return platformPaymentService.refundProcess(request, paymentBaseOrder);
+    public String refundProcess(RefundNotifyProcessRequest request, RefundBaseOrder refundBaseOrder) {
+        PlatformPaymentService platformPaymentService = this.platformPaymentServiceProvider.getPlatformPaymentService(refundBaseOrder);
+        return platformPaymentService.refundProcess(request, refundBaseOrder);
     }
 
     @Override

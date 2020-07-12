@@ -5,14 +5,18 @@ import com.wuxp.payment.req.PaymentBaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
  * 订单退款响应
+ *
+ * @author wuxp
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class OrderRefundResponse extends AbstractPaymentResponse {
 

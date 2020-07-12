@@ -2,22 +2,22 @@ package com.wuxp.payment.model;
 
 
 /**
- * 支付订单
+ * 退款单
  *
  * @author wxup
  */
-public interface PaymentBaseOrder extends PlatformPaymentPartnerIdentity {
+public interface RefundBaseOrder extends PlatformPaymentPartnerIdentity {
 
 
     /**
-     * 获取第三方流水号
+     * 获取第三方退款流水号
      *
      * @return
      */
     String getOutTradeNo();
 
     /**
-     * 获取应用内的支付流水号
+     * 获取应用内的退款流水号
      *
      * @return
      */

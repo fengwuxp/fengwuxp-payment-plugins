@@ -8,6 +8,10 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * 抽象的响应对象
+ * @author wuxp
+ */
 @Data
 @Accessors(chain = true)
 public abstract class AbstractPaymentResponse implements PaymentBaseResponse {

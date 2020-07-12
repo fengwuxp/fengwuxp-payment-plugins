@@ -3,6 +3,7 @@ package com.wuxp.payment;
 
 import com.wuxp.payment.enums.NotifyMethod;
 import com.wuxp.payment.model.PaymentBaseOrder;
+import com.wuxp.payment.model.RefundBaseOrder;
 import com.wuxp.payment.resp.QueryOrderResponse;
 import com.wuxp.payment.resp.QueryRefundOrderResponse;
 
@@ -29,8 +30,8 @@ public interface PaymentCallbackTemplate {
      *
      * @param notifyMethod
      * @param response
-     * @param paymentBaseOrder
+     * @param refundBaseOrder
      * @return
      */
-    boolean handleRefundCallback(NotifyMethod notifyMethod, QueryRefundOrderResponse response, PaymentBaseOrder paymentBaseOrder);
+    boolean handleRefundCallback(NotifyMethod notifyMethod, QueryRefundOrderResponse response, RefundBaseOrder refundBaseOrder);
 }

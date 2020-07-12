@@ -3,6 +3,7 @@ package com.wuxp.payment.examples.payment;
 import com.wuxp.payment.PaymentCallbackTemplate;
 import com.wuxp.payment.enums.NotifyMethod;
 import com.wuxp.payment.model.PaymentBaseOrder;
+import com.wuxp.payment.model.RefundBaseOrder;
 import com.wuxp.payment.resp.QueryOrderResponse;
 import com.wuxp.payment.resp.QueryRefundOrderResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +29,10 @@ public class ExamplePaymentCallbackTemplate implements PaymentCallbackTemplate {
     }
 
     @Override
-    public boolean handleRefundCallback(NotifyMethod notifyMethod, QueryRefundOrderResponse response, PaymentBaseOrder paymentBaseOrder) {
-        String tradeNo = paymentBaseOrder.getTradeNo().intern();
+    public boolean handleRefundCallback(NotifyMethod notifyMethod, QueryRefundOrderResponse response, RefundBaseOrder refundBaseOrder) {
+        String tradeNo = refundBaseOrder.getRefundTradeNo().intern();
         synchronized (tradeNo) {
-            log.debug("模拟订单退款回调处理 {}", paymentBaseOrder);
+            log.debug("模拟订单退款回调处理 {}", refundBaseOrder);
         }
 
         return false;

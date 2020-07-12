@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * 支付插件的基础响应
+ *
+ * @author wuxp
  */
 public interface PaymentBaseResponse extends Serializable {
 
@@ -16,7 +18,7 @@ public interface PaymentBaseResponse extends Serializable {
     boolean isSuccess();
 
     /**
-     * 返回码
+     * 第三方支付平台的返回码
      *
      * @return
      */

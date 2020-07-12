@@ -3,14 +3,18 @@ package com.wuxp.payment.resp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
  * 退款查询响应
+ *
+ * @author wuxp
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class QueryRefundOrderResponse extends OrderRefundResponse {
 
