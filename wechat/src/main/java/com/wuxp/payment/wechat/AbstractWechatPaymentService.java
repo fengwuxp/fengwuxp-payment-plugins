@@ -20,6 +20,7 @@ import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.enums.TradeStatus;
 import com.wuxp.payment.model.PaymentBaseOrder;
+import com.wuxp.payment.model.RefundBaseOrder;
 import com.wuxp.payment.req.*;
 import com.wuxp.payment.resp.OrderRefundResponse;
 import com.wuxp.payment.resp.QueryOrderResponse;
@@ -130,12 +131,12 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
     /**
      * 微信退款异步通知
      *
-     * @param request          退款通知参数
-     * @param paymentBaseOrder 订单信息
+     * @param request         退款通知参数
+     * @param refundBaseOrder 退款订单信息
      * @return
      */
     @Override
-    public String refundProcess(RefundNotifyProcessRequest request, PaymentBaseOrder paymentBaseOrder) {
+    public String refundProcess(RefundNotifyProcessRequest request, RefundBaseOrder refundBaseOrder) {
         try {
             //验签
             if (!this.verifyRefundNotifyRequest(request)) {
@@ -148,7 +149,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             final WxPayRefundNotifyResult notifyResult = this.wxPayService.parseRefundNotifyResult(xmlData);
             QueryRefundOrderResponse response = new QueryRefundOrderResponse();
             response.setPaymentPlatform(PaymentPlatform.WE_CHAT);
-            response.setPaymentMethod(paymentBaseOrder.getPaymentMethod());
+            response.setPaymentMethod(refundBaseOrder.getPaymentMethod());
             response.setTradeRefundNo(notifyResult.getReqInfo().getOutRefundNo());
             response.setOutTradeRefundNo(notifyResult.getReqInfo().getRefundId());
             response.setOrderAmount(notifyResult.getReqInfo().getTotalFee());
@@ -161,7 +162,7 @@ public abstract class AbstractWechatPaymentService extends AbstractPlatformPayme
             } else {
                 response.setTradeStatus(response.getOrderAmount().equals(response.getRefundAmount()) ? TradeStatus.REFUNDED : TradeStatus.PARTIAL_REFUND);
             }
-            boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
+            boolean success = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, refundBaseOrder);
             return this.getNotifyReturnCode(success);
         } catch (WxPayException e) {
             log.error("微信支付异步通知失败：", e);

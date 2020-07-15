@@ -19,6 +19,7 @@ import com.wuxp.payment.enums.PaymentMethod;
 import com.wuxp.payment.enums.PaymentPlatform;
 import com.wuxp.payment.enums.TradeStatus;
 import com.wuxp.payment.model.PaymentBaseOrder;
+import com.wuxp.payment.model.RefundBaseOrder;
 import com.wuxp.payment.req.*;
 import com.wuxp.payment.resp.OrderRefundResponse;
 import com.wuxp.payment.resp.QueryOrderResponse;
@@ -161,11 +162,11 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
      * 支付宝退款异步通知
      *
      * @param request
-     * @param paymentBaseOrder 订单信息
+     * @param refundBaseOrder 退款订单信息
      * @return
      */
     @Override
-    public String refundProcess(RefundNotifyProcessRequest request, PaymentBaseOrder paymentBaseOrder) {
+    public String refundProcess(RefundNotifyProcessRequest request, RefundBaseOrder refundBaseOrder) {
         // 验证签名
         if (!this.verifyRefundNotifyRequest(request)) {
             if (log.isDebugEnabled()) {
@@ -176,13 +177,13 @@ public abstract class AbstractAliPayPaymentService extends AbstractPlatformPayme
         // 退款处理订单通知
         QueryRefundOrderResponse response = new QueryRefundOrderResponse();
         response.setPaymentPlatform(PaymentPlatform.ALI_PAY);
-        response.setPaymentMethod(paymentBaseOrder.getPaymentMethod());
+        response.setPaymentMethod(refundBaseOrder.getPaymentMethod());
         Map<String, String> notifyParams = request.getNotifyParams();
         response.setTradeRefundNo(request.getRefundTradeNo());
         response.setOutTradeRefundNo(notifyParams.get("out_biz_no").toString());
         response.setOrderAmount(PaymentUtil.yuanToFen(notifyParams.get("total_amount").toString()));
         response.setRefundAmount(PaymentUtil.yuanToFen(notifyParams.get("refund_fee").toString()));
-        boolean r = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, paymentBaseOrder);
+        boolean r = this.callbackTemplate.handleRefundCallback(request.getNotifyMethod(), response, refundBaseOrder);
         return this.getNotifyReturnCode(r);
     }
 
